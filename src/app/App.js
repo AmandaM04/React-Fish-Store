@@ -6,7 +6,7 @@ import './App.css';
 // import Fish from '../components/Fish/Fish';
 import Home from '../components/Home/Home';
 import Inventory from '../components/Inventory/Inventory';
-// import Login from '../components/Login/Login';
+import Login from '../components/Login/Login';
 import Navbar from '../components/Navbar/Navbar';
 // import New from '../components/New/New';
 // import Order from '../components/Order/Order';
@@ -66,13 +66,17 @@ class App extends Component {
                 <Switch>
                   <Route path="/" exact component={Home} />
                   <PrivateRoute
-                    path="/Inventory"
+                    path="/inventory"
                     authed={this.state.authed}
                     component={Inventory} />
                   <PublicRoute
                     path="/register"
                     authed={this.state.authed}
                     component={Register} />
+                  <PublicRoute
+                    path="/login"
+                    authed={this.state.authed}
+                    component={Login} />
                 </Switch>
               </div>
             </div>
