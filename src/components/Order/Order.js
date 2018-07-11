@@ -5,6 +5,10 @@ import formatPrice from '../../helpers';
 import './Order.css';
 
 class Order extends React.Component {
+  saveOrder = () => {
+    this.props.saveNewOrder();
+  }
+
   renderOrder = (key) => {
     const fish = this.props.fishes.find(x => x.id === key);
     const count = this.props.order[key];
@@ -29,6 +33,7 @@ class Order extends React.Component {
 
   render () {
     const orderIds = Object.keys(this.props.order);
+    const orderExists = orderIds.length > 0;
     const total = orderIds.reduce((prevTotal, key) => {
       const fish = this.props.fishes.find(x => x.id === key);
       const count = this.props.order[key];
@@ -44,7 +49,13 @@ class Order extends React.Component {
         <ul>
           {orderIds.map(this.renderOrder)}
           <div className="total">Total: <strong>{formatPrice(total)}</strong></div>
-          <button className="btn btn-default">Save Order</button>
+          {
+            orderExists ? (
+              <button className="btn btn-default" onClick={this.saveOrder}>Save Order</button>
+            ) : (
+              <div>Add Inventory to your order</div>
+            )
+          }
         </ul>
       </div>
     );
