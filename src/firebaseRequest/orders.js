@@ -60,4 +60,17 @@ const getSingleRequest = (id) => {
   });
 };
 
-export default { getRequest, postRequest, deleteRequest, getSingleRequest };
+const putRequest = (orderId, updatedOrder) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .put(`${constants.firebaseConfig.databaseURL}/orders/${orderId}.json`, updatedOrder)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error.message);
+      });
+  });
+};
+
+export default { getRequest, postRequest, deleteRequest, getSingleRequest, putRequest };
