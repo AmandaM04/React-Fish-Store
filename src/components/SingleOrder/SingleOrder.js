@@ -18,16 +18,22 @@ class SingleOrder extends React.Component {
     fishes: [],
   }
 
+  modifyOrder (id) {
+    const modifiedOrder = { ...this.state.order };
+    delete modifiedOrder.fishes[id];
+    this.setState({ order: modifiedOrder });
+  }
+
   componentDidMount () {
     const firebaseId = this.props.match.params.id;
     orderRequests
       .getSingleRequest(firebaseId)
       .then((order) => {
-        this.setState({order});
+        this.setState({ order });
         fishRequests
           .getRequest()
           .then((fishes) => {
-            this.setState({fishes});
+            this.setState({ fishes });
           });
       })
       .catch(((err) => {
@@ -48,12 +54,16 @@ class SingleOrder extends React.Component {
   }
 
   render () {
-    const {order} = this.state;
+    const { order } = this.state;
     const orderNumber = this.props.match.params.id;
     const fishComponents = Object.keys(order.fishes).map(o => {
       const purchasedFish = this.state.fishes.find(x => {
         return x.id === o;
       });
+      const xClickFunction = () => {
+        this.modifyOrder(o);
+      };
+
       if (purchasedFish) {
         return (
           <li key={o} className="text-left">
@@ -61,7 +71,7 @@ class SingleOrder extends React.Component {
             <div className="col-xs-5">{purchasedFish.name}</div>
             <div className="col-xs-3">{formatPrice(purchasedFish.price)}</div>
             <div className="col-xs-2">
-              <button className="btn btn-default">
+              <button className="btn btn-default" onClick={xClickFunction}>
                 &times;
               </button>
             </div>
